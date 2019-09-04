@@ -89,8 +89,10 @@ describe('Things Endpoints', function() {
     context(`Given no things`, () => {
       it(`responds with 404`, () => {
         const thingId = 123456
+        //const token = 'basic ' + Buffer.from(`${testUser.user_name}:password`).toString('base64')
         return supertest(app)
           .get(`/api/things/${thingId}`)
+          //.set({'Authentication': token})
           .expect(404, { error: `Thing doesn't exist` })
       })
     })
@@ -112,9 +114,10 @@ describe('Things Endpoints', function() {
           testThings[thingId - 1],
           testReviews,
         )
-
+        const token = 'basic ' + Buffer.from(`${testUser.user_name}:password`).toString('base64')
         return supertest(app)
           .get(`/api/things/${thingId}`)
+          .set({'Authentication': token})
           .expect(200, expectedThing)
       })
     })
